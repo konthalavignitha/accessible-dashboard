@@ -39,41 +39,36 @@
       <a href="#home">Dashboard Home</a>
     </aside>
   <main id="home">
-      <h2>Dashboard Overview</h2>
-      <section id="data">
-        <h3>Student Data</h3>
-        <table>
-          <caption>Student marks</caption>
-          <thead>
-            <tr><th scope="col">Name</th><th scope="col">Marks</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Ravi</td><td>85</td></tr>
-            <tr><td>Sita</td><td>92</td></tr>
-          </tbody>
-        </table>
-      </section>
+  <h2>Product Dashboard</h2>
 
-      <article>
-        <h3>Contact Form</h3>
-        <form id="contact">
-          <label for="name">Name</label>
-          <input id="name" name="name" required>
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required>
-          <button type="submit">Submit</button>
-        </form>
-        <p id="message" role="status"></p>
-      </article>
-<button id="themeToggle" type="button">
-  Switch Theme
-</button>
-      <button id="openDialog" type="button">Open Information</button>
-      <dialog id="infoDialog" aria-labelledby="dialogTitle">
-        <h3 id="dialogTitle">Dashboard Information</h3>
-        <p>This dashboard uses accessible HTML elements.</p>
-        <button id="closeDialog" type="button">Close</button>
-      </dialog>
+  <div id="errorBanner" role="alert" hidden></div>
+
+  <p id="loading" aria-live="polite" hidden>
+    Loading products...
+  </p>
+
+  <section aria-label="Product search and filters">
+    <label for="searchInput">Search products</label>
+    <input id="searchInput" type="search"
+           placeholder="Search products">
+
+    <h3>Categories</h3>
+    <div id="categoryTabs" class="category-tabs"></div>
+
+    <label for="sortSelect">Sort products</label>
+    <select id="sortSelect">
+      <option value="default">Default order</option>
+      <option value="priceLow">Price: Low to High</option>
+      <option value="priceHigh">Price: High to Low</option>
+      <option value="name">Name: A to Z</option>
+    </select>
+
+    <p>Items in cart: <strong id="cartCount">0</strong></p>
+  </section>
+
+  <section aria-label="Products">
+    <div id="productList" class="product-grid"></div>
+  </section>
     </main>    
   </div>
 
