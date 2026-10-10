@@ -1,11 +1,10 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ShopZone | Shopping Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessible Shopping Dashboard</title>
   <link rel="stylesheet" href="style.css">
   <script src="api.js" defer></script>
   <script src="app.js" defer></script>
@@ -13,147 +12,59 @@
 <body>
   <a class="skip-link" href="#main">Skip to products</a>
 
-  <header>
-    <div class="topbar">
-      <a class="logo" href="#home">Shop<span>Zone</span></a>
-
-      <form id="searchForm" class="searchbar" role="search">
-        <label class="visually-hidden" for="searchInput">Search products</label>
-        <select id="searchCategory" aria-label="Search category">
-          <option value="All">All</option>
-        </select>
-        <input id="searchInput" type="search" placeholder="Search ShopZone">
-        <button type="submit" aria-label="Search">🔍</button>
-      </form>
-
-      <button id="themeToggle" class="header-button" type="button">
-        🌙 Theme
-      </button>
-
-      <button id="viewCart" class="header-button cart-button" type="button"
-        aria-expanded="false" aria-controls="cartPanel">
-        🛒 Cart <span id="cartCount">0</span>
-      </button>
-    </div>
-
-    <nav class="subnav" aria-label="Shopping navigation">
-      <a href="#products">☰ All Products</a>
-      <a href="#products">Today's Deals</a>
-      <a href="#students">Student Records</a>
-      <a href="#contact">Contact</a>
-      <button id="openInfo" type="button">About</button>
-    </nav>
+  <header class="header">
+    <h1>ShopZone</h1>
+    <button id="themeToggle" type="button">🌙 Dark Mode</button>
+    <button id="viewCart" type="button">
+      🛒 Cart (<span id="cartCount">0</span>)
+    </button>
   </header>
 
   <main id="main">
-    <section id="home" class="hero">
-      <div>
-        <p class="hero-label">WELCOME TO SHOPZONE</p>
-        <h1>Discover products you'll love.</h1>
-        <p>Explore products, compare prices, and manage your shopping cart.</p>
-        <a class="hero-link" href="#products">Start shopping →</a>
-      </div>
+    <section class="intro">
+      <h2>Welcome to ShopZone</h2>
+      <p>Find products, compare prices, and shop with ease.</p>
     </section>
 
-    <section id="products" class="section">
+    <section class="controls" aria-label="Product controls">
+      <label for="searchInput">Search products</label>
+      <input id="searchInput" type="search"
+             placeholder="Search by product name">
+
+      <label for="categorySelect">Category</label>
+      <select id="categorySelect">
+        <option value="All">All categories</option>
+      </select>
+
+      <label for="sortSelect">Sort products</label>
+      <select id="sortSelect">
+        <option value="default">Featured</option>
+        <option value="priceLow">Price: Low to High</option>
+        <option value="priceHigh">Price: High to Low</option>
+        <option value="name">Name: A to Z</option>
+      </select>
+    </section>
+
+    <p id="status" role="status" aria-live="polite">
+      Loading products...
+    </p>
+
+    <div id="productList" class="product-grid"></div>
+
+    <section id="cartPanel" hidden>
       <div class="section-heading">
-        <div>
-          <h2>Explore Products</h2>
-          <p>Find something that suits you.</p>
-        </div>
-        <div class="sort-box">
-          <label for="sortSelect">Sort by</label>
-          <select id="sortSelect">
-            <option value="default">Featured</option>
-            <option value="priceLow">Price: Low to High</option>
-            <option value="priceHigh">Price: High to Low</option>
-            <option value="name">Name: A to Z</option>
-          </select>
-        </div>
+        <h2>Your Shopping Cart</h2>
+        <button id="closeCart" type="button">Close</button>
       </div>
-
-      <div id="loading" role="status" aria-live="polite">Loading products...</div>
-      <div id="errorBanner" role="alert" hidden></div>
-      <p id="productStatus" role="status" aria-live="polite"></p>
-
-      <div class="category-row" id="categoryTabs" aria-label="Product categories"></div>
-      <div id="productList" class="product-grid"></div>
-
-      <section id="cartPanel" class="cart-panel" aria-label="Shopping cart" hidden>
-        <div class="cart-heading">
-          <h2>Your Shopping Cart</h2>
-          <button id="closeCart" class="light-button" type="button">Close</button>
-        </div>
-        <div id="cartItems"></div>
-        <div class="cart-summary">
-          <p>Subtotal (<span id="cartQuantity">0</span> items)</p>
-          <h3 id="cartTotal">$0.00</h3>
-        </div>
-        <button id="clearCart" class="light-button" type="button">Clear cart</button>
-        <p class="note">Demo shopping cart only. No real purchases are made.</p>
-      </section>
-    </section>
-
-    <section id="students" class="section secondary-section">
-      <h2>Student Records</h2>
-      <p>Sample records included for the dashboard project.</p>
-      <div class="table-wrap" role="region" aria-label="Student records" tabindex="0">
-        <table>
-          <caption>Sample student details</caption>
-          <thead>
-            <tr>
-              <th scope="col">Student ID</th>
-              <th scope="col">Name</th>
-              <th scope="col">Course</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>ST001</td><td>Student One</td><td>Computer Science</td><td>Active</td></tr>
-            <tr><td>ST002</td><td>Student Two</td><td>Data Science</td><td>Active</td></tr>
-            <tr><td>ST003</td><td>Student Three</td><td>Information Technology</td><td>Active</td></tr>
-            <tr><td>ST004</td><td>Student Four</td><td>Artificial Intelligence</td><td>Active</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="contact" class="section secondary-section">
-      <h2>Contact Us</h2>
-      <p>Try the form validation below.</p>
-      <form id="contactForm" novalidate>
-        <div class="field">
-          <label for="contactName">Full name</label>
-          <input id="contactName" autocomplete="name" required minlength="2">
-          <small id="nameError" class="field-error"></small>
-        </div>
-        <div class="field">
-          <label for="contactEmail">Email address</label>
-          <input id="contactEmail" type="email" autocomplete="email" required>
-          <small id="emailError" class="field-error"></small>
-        </div>
-        <div class="field">
-          <label for="contactMessage">Message</label>
-          <textarea id="contactMessage" rows="4" required minlength="10"></textarea>
-          <small id="messageError" class="field-error"></small>
-        </div>
-        <button type="submit" class="primary-button">Validate message</button>
-        <p id="formStatus" role="status" aria-live="polite"></p>
-      </form>
-      <p class="note">This demonstration does not send messages to a server.</p>
+      <div id="cartItems"></div>
+      <p>Subtotal: <strong id="cartTotal">$0.00</strong></p>
+      <button id="clearCart" type="button">Clear Cart</button>
+      <p>Demo only. No real purchases are made.</p>
     </section>
   </main>
 
-  <dialog id="infoDialog" aria-labelledby="dialogTitle">
-    <h2 id="dialogTitle">About ShopZone</h2>
-    <p>An educational shopping dashboard built with HTML, CSS, JavaScript, and a product API.</p>
-    <button id="closeInfo" class="primary-button" type="button">Close</button>
-  </dialog>
-
   <footer>
-    <a class="logo footer-logo" href="#home">Shop<span>Zone</span></a>
-    <p>Accessible Shopping Dashboard · Learning Project</p>
-    <a href="#main">Back to top ↑</a>
+    <p>Accessible Shopping Dashboard | Learning Project</p>
   </footer>
 </body>
 </html>
