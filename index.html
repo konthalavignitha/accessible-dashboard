@@ -1,34 +1,19 @@
 
+<
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accessible Dashboard</title>
-<link rel="stylesheet" href="style.css">
-  <style>
-    body { margin: 0; font-family: Arial, sans-serif; color: #222; background: #f4f6f9; }
-    header, footer { background: #17365d; color: white; padding: 18px; }
-    nav a { color: white; margin-right: 15px; }
-    .layout { display: flex; min-height: 70vh; }
-    aside { background: #e1e8f0; padding: 20px; width: 150px; }
-    main { padding: 20px; flex: 1; }
-    section, article { background: white; padding: 16px; margin-bottom: 16px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #777; padding: 10px; text-align: left; }
-    label { display: block; margin-top: 12px; }
-    input, button { padding: 10px; margin-top: 5px; }
-    a:focus, button:focus, input:focus { outline: 3px solid #e0a000; }
-    dialog { max-width: 300px; }
-    @media (max-width: 600px) { .layout { flex-direction: column; } aside { width: auto; } }
-  </style>
+  <title>Accessible Shopping Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1>Accessible Dashboard</h1>
     <nav aria-label="Main navigation">
       <a href="#home">Home</a>
-      <a href="#data">Data</a>
+      <a href="#data">Products</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -38,62 +23,54 @@
       <h2>Menu</h2>
       <a href="#home">Dashboard Home</a>
     </aside>
-  <main id="home">
-  <h2>Product Dashboard</h2>
 
-  <div id="errorBanner" role="alert" hidden></div>
+    <main id="home">
+      <h2>Product Dashboard</h2>
 
-  <p id="loading" aria-live="polite" hidden>
-    Loading products...
-  </p>
+      <div id="errorBanner" role="alert" hidden></div>
 
-  <section aria-label="Product search and filters">
-    <label for="searchInput">Search products</label>
-    <input id="searchInput" type="search"
-           placeholder="Search products">
+      <p id="loading" aria-live="polite" hidden>
+        Loading products...
+      </p>
 
-    <h3>Categories</h3>
-    <div id="categoryTabs" class="category-tabs"></div>
+      <section aria-label="Product search and filters">
+        <label for="searchInput">Search products</label>
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search products"
+        >
 
-    <label for="sortSelect">Sort products</label>
-    <select id="sortSelect">
-      <option value="default">Default order</option>
-      <option value="priceLow">Price: Low to High</option>
-      <option value="priceHigh">Price: High to Low</option>
-      <option value="name">Name: A to Z</option>
-    </select>
+        <h3>Categories</h3>
+        <div id="categoryTabs" class="category-tabs"></div>
 
-    <p>Items in cart: <strong id="cartCount">0</strong></p>
-  </section>
+        <label for="sortSelect">Sort products</label>
+        <select id="sortSelect">
+          <option value="default">Default order</option>
+          <option value="priceLow">Price: Low to High</option>
+          <option value="priceHigh">Price: High to Low</option>
+          <option value="name">Name: A to Z</option>
+        </select>
+      </section>
 
-<button id="viewCart" type="button">
-  View Cart (<span id="cartCount">0</span>)
-</button>
+      <section aria-label="Shopping cart">
+        <button id="viewCart" type="button">
+          View Cart (<span id="cartCount">0</span>)
+        </button>
+        <div id="cartPanel" hidden></div>
+      </section>
 
-  <section aria-label="Products">
-    <div id="productList" class="product-grid"></div>
-  </section>
-    </main>    
+      <section id="data" aria-label="Products">
+        <div id="productList" class="product-grid"></div>
+      </section>
+    </main>
   </div>
 
-  <footer>
+  <footer id="contact">
     <p>Accessible Dashboard Project</p>
   </footer>
 
-  <script>
-    const dialog = document.getElementById('infoDialog');
-    document.getElementById('openDialog').addEventListener('click', () => dialog.showModal());
-    document.getElementById('closeDialog').addEventListener('click', () => dialog.close());
-    document.getElementById('contact').addEventListener('submit', function(event) {
-      event.preventDefault();
-      document.getElementById('message').textContent = 'Form submitted successfully!';
-    });
-document.getElementById('themeToggle').addEventListener('click', () => {
-  const isDark = document.body.dataset.theme === 'dark';
-  document.body.dataset.theme = isDark ? 'light' : 'dark';
-});
-  </script>
-<script src="api.js"></script>
-<script src="app.js"></script>
+  <script src="api.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
