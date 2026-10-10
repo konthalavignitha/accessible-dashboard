@@ -1,54 +1,102 @@
+# ShopZone — Accessible Shopping Dashboard
 
-# Accessible Dashboard
-
-A responsive web dashboard demonstrating accessibility, product browsing, shopping cart management, student records, and form validation.
+An accessible, responsive shopping dashboard built using HTML, CSS, and JavaScript for an internship capstone project.
 
 ## Features
 
-- Fetches product data from the Fake Store API
-- Searches products by name
-- Filters products by category
-- Sorts products by price and name
-- Displays product images, ratings, and prices
-- Adds and removes cart items
-- Calculates the cart total
-- Saves the cart and theme using local storage
-- Displays sample student records in an accessible table
-- Validates contact form fields
-- Provides an accessible information dialog
-- Supports light and dark themes
-- Includes a skip-to-content link and visible keyboard focus
-- Uses responsive layouts for mobile, tablet, and desktop
+- Demo login and logout
+- Product catalog using Fake Store API
+- Search products by name or category
+- Filter products by category
+- Sort products by price and name
+- Add products to cart
+- Increase and decrease cart quantities
+- Remove products and clear the cart
+- Create, view, edit, and delete custom products (CRUD)
+- Save custom products, cart, and theme in browser localStorage
+- Light and dark mode
+- Responsive design for mobile and desktop
+- Accessible form labels and keyboard focus indicators
 
 ## Technologies Used
 
 - HTML5
 - CSS3
 - JavaScript
-- Fetch API and async/await
 - Fake Store API
-- GitHub Pages
+- Browser localStorage
+- GitHub
 
-## How to Run
+## Project Structure
 
-1. Open `index.html` in a browser, or deploy the repository using GitHub Pages.
-2. Connect to the internet to load products from the API.
-3. Search, filter, and sort the products.
-4. Add products to the cart and test cart management.
-5. Switch between light and dark themes.
-6. Test the student table and contact form.
+    accessible-dashboard/
+    ├── index.html
+    ├── style.css
+    ├── api.js
+    ├── app.js
+    └── README.md
 
-## Accessibility
+## Architecture
 
-The project includes semantic HTML, labelled form fields, keyboard focus indicators, a skip link, accessible dialog controls, live status messages, and responsive design.
+    User
+      |
+      v
+    HTML Interface
+      |
+      v
+    JavaScript Application
+      |
+      +------> Fake Store API
+      |          |
+      |          v
+      |       Product Catalog
+      |
+      +------> Browser localStorage
+                 |
+                 +-- Demo user
+                 +-- Cart
+                 +-- Custom products
+                 +-- Theme preference
 
-## Limitations
+    CSS provides responsive styling and accessibility features.
 
-- Student records are sample data.
-- The contact form validates input but does not send messages to a server.
-- The shopping cart is stored locally in the browser.
-- Product data depends on the external Fake Store API.
+## Setup Instructions
 
-## Author
+1. Clone or download this repository.
+2. Keep all four code files in the same folder.
+3. Open index.html in a modern browser.
+4. Connect to the internet to load online products.
+5. Enter a name and email to use the demo dashboard.
+6. Test the catalog, cart, theme, and CRUD features.
 
-Accessible Dashboard Learning Project
+For more reliable local API testing, use a local development server.
+
+## Deployment
+
+This is a static website and can be deployed using GitHub Pages or Netlify.
+
+For GitHub Pages:
+
+1. Open the repository on GitHub.
+2. Go to Settings.
+3. Select Pages.
+4. Choose the main branch and root folder.
+5. Save the settings.
+6. Open the published website URL after deployment finishes.
+
+## Important Limitations
+
+- Login is simulated and is not secure authentication.
+- Do not enter real passwords or sensitive information.
+- localStorage saves data only in the current browser and device.
+- Custom products are not shared through a cloud database.
+- The cart does not process real orders or payments.
+- The online catalog requires internet access.
+
+## Conclusion
+
+ShopZone demonstrates front-end development, API integration,
+product filtering, shopping cart functionality, CRUD operations,
+browser storage, responsive design, and accessibility practices.
+
+This project is intended for educational and internship demonstration.
