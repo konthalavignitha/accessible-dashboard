@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessible Dashboard</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; color: #222; background: #f4f6f9; }
+    header, footer { background: #17365d; color: white; padding: 18px; }
+    nav a { color: white; margin-right: 15px; }
+    .layout { display: flex; min-height: 70vh; }
+    aside { background: #e1e8f0; padding: 20px; width: 150px; }
+    main { padding: 20px; flex: 1; }
+    section, article { background: white; padding: 16px; margin-bottom: 16px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #777; padding: 10px; text-align: left; }
+    label { display: block; margin-top: 12px; }
+    input, button { padding: 10px; margin-top: 5px; }
+    a:focus, button:focus, input:focus { outline: 3px solid #e0a000; }
+    dialog { max-width: 300px; }
+    @media (max-width: 600px) { .layout { flex-direction: column; } aside { width: auto; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Accessible Dashboard</h1>
+    <nav aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#data">Data</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="layout">
+    <aside aria-label="Sidebar">
+      <h2>Menu</h2>
+      <a href="#home">Dashboard Home</a>
+    </aside>
+
+    <main id="home">
+      <h2>Dashboard Overview</h2>
+      <section id="data">
+        <h3>Student Data</h3>
+        <table>
+          <caption>Student marks</caption>
+          <thead>
+            <tr><th scope="col">Name</th><th scope="col">Marks</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Ravi</td><td>85</td></tr>
+            <tr><td>Sita</td><td>92</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <article>
+        <h3>Contact Form</h3>
+        <form id="contact">
+          <label for="name">Name</label>
+          <input id="name" name="name" required>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required>
+          <button type="submit">Submit</button>
+        </form>
+        <p id="message" role="status"></p>
+      </article>
+
+      <button id="openDialog" type="button">Open Information</button>
+      <dialog id="infoDialog" aria-labelledby="dialogTitle">
+        <h3 id="dialogTitle">Dashboard Information</h3>
+        <p>This dashboard uses accessible HTML elements.</p>
+        <button id="closeDialog" type="button">Close</button>
+      </dialog>
+    </main>
+  </div>
+
+  <footer>
+    <p>Accessible Dashboard Project</p>
+  </footer>
+
+  <script>
+    const dialog = document.getElementById('infoDialog');
+    document.getElementById('openDialog').addEventListener('click', () => dialog.showModal());
+    document.getElementById('closeDialog').addEventListener('click', () => dialog.close());
+    document.getElementById('contact').addEventListener('submit', function(event) {
+      event.preventDefault();
+      document.getElementById('message').textContent = 'Form submitted successfully!';
+    });
+  </script>
+</body>
+</html>
