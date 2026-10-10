@@ -3,73 +3,149 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accessible Shopping Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An accessible shopping and student dashboard project.">
+  <title>Accessible Dashboard</title>
   <link rel="stylesheet" href="style.css">
+  <script src="api.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>Accessible Dashboard</h1>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="#home">Accessible Dashboard</a>
     <nav aria-label="Main navigation">
       <a href="#home">Home</a>
-      <a href="#data">Products</a>
+      <a href="#products">Products</a>
+      <a href="#students">Students</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button id="themeToggle" type="button" aria-pressed="false">
+      Dark mode
+    </button>
   </header>
 
-  <div class="layout">
-    <aside aria-label="Sidebar">
-      <h2>Menu</h2>
-      <a href="#home">Dashboard Home</a>
-    </aside>
+  <main id="main">
+    <section id="home" class="welcome section">
+      <p class="eyebrow">Accessible web application</p>
+      <h1>Welcome to your dashboard</h1>
+      <p>Explore products, manage your cart, view student records, and contact us.</p>
+      <button id="openInfo" type="button">About this project</button>
+    </section>
 
-    <main id="home">
+    <section id="products" class="section">
       <h2>Product Dashboard</h2>
+      <p>Search, filter, sort, and add products to your cart.</p>
 
-      <div id="errorBanner" role="alert" hidden></div>
-
-      <p id="loading" aria-live="polite" hidden>
+      <div id="loading" role="status" aria-live="polite" hidden>
         Loading products...
-      </p>
+      </div>
+      <div id="errorBanner" class="error" role="alert" hidden></div>
 
-      <section aria-label="Product search and filters">
-        <label for="searchInput">Search products</label>
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Search products"
-        >
+      <div class="toolbar">
+        <div class="field">
+          <label for="searchInput">Search products</label>
+          <input id="searchInput" type="search" placeholder="Search by name">
+        </div>
+        <div class="field">
+          <label for="categorySelect">Category</label>
+          <select id="categorySelect">
+            <option value="All">All categories</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="sortSelect">Sort products</label>
+          <select id="sortSelect">
+            <option value="default">Default order</option>
+            <option value="priceLow">Price: Low to High</option>
+            <option value="priceHigh">Price: High to Low</option>
+            <option value="name">Name: A to Z</option>
+          </select>
+        </div>
+      </div>
 
-        <h3>Categories</h3>
-        <div id="categoryTabs" class="category-tabs"></div>
-
-        <label for="sortSelect">Sort products</label>
-        <select id="sortSelect">
-          <option value="default">Default order</option>
-          <option value="priceLow">Price: Low to High</option>
-          <option value="priceHigh">Price: High to Low</option>
-          <option value="name">Name: A to Z</option>
-        </select>
+      <div class="cart-toolbar">
+        <p>Items in cart: <strong id="cartCount">0</strong></p>
+        <button id="viewCart" type="button" aria-expanded="false"
+          aria-controls="cartPanel">View cart</button>
+      </div>
+      <section id="cartPanel" class="panel" aria-label="Shopping cart" hidden>
+        <h3>Your Shopping Cart</h3>
+        <div id="cartItems"></div>
+        <p class="total">Total: <span id="cartTotal">$0.00</span></p>
+        <button id="clearCart" type="button" class="secondary">Clear cart</button>
+        <button id="closeCart" type="button" class="secondary">Close cart</button>
       </section>
 
-      <section aria-label="Shopping cart">
-        <button id="viewCart" type="button">
-          View Cart (<span id="cartCount">0</span>)
-        </button>
-        <div id="cartPanel" hidden></div>
-      </section>
+      <p id="productStatus" role="status" aria-live="polite"></p>
+      <div id="productList" class="product-grid"></div>
+    </section>
 
-      <section id="data" aria-label="Products">
-        <div id="productList" class="product-grid"></div>
-      </section>
-    </main>
-  </div>
+    <section id="students" class="section">
+      <h2>Student Records</h2>
+      <p>Example records for demonstrating an accessible data table.</p>
+      <div class="table-wrap" role="region" aria-label="Student records table"
+        tabindex="0">
+        <table>
+          <caption>Sample student details</caption>
+          <thead>
+            <tr>
+              <th scope="col">Student ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Course</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>ST001</td><td>Student One</td><td>Computer Science</td><td>Active</td></tr>
+            <tr><td>ST002</td><td>Student Two</td><td>Data Science</td><td>Active</td></tr>
+            <tr><td>ST003</td><td>Student Three</td><td>Information Technology</td><td>Active</td></tr>
+            <tr><td>ST004</td><td>Student Four</td><td>Artificial Intelligence</td><td>Active</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-  <footer id="contact">
-    <p>Accessible Dashboard Project</p>
+    <section id="contact" class="section">
+      <h2>Contact Us</h2>
+      <p>Complete this form to test client-side form validation.</p>
+      <form id="contactForm" novalidate>
+        <div class="field">
+          <label for="contactName">Full name</label>
+          <input id="contactName" name="name" autocomplete="name"
+            required minlength="2" maxlength="80">
+          <small id="nameError" class="field-error"></small>
+        </div>
+        <div class="field">
+          <label for="contactEmail">Email address</label>
+          <input id="contactEmail" name="email" type="email"
+            autocomplete="email" required>
+          <small id="emailError" class="field-error"></small>
+        </div>
+        <div class="field">
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" name="message" rows="5"
+            required minlength="10" maxlength="1000"></textarea>
+          <small id="messageError" class="field-error"></small>
+        </div>
+        <button type="submit">Validate message</button>
+        <p id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+      <p class="note">This demo validates your form in the browser. It does not send or store messages.</p>
+    </section>
+  </main>
+
+  <dialog id="infoDialog" aria-labelledby="dialogTitle">
+    <h2 id="dialogTitle">About this project</h2>
+    <p>This project demonstrates accessible HTML, responsive CSS, JavaScript,
+      API data loading, product filtering, cart management, and form validation.</p>
+    <button id="closeInfo" type="button">Close dialog</button>
+  </dialog>
+
+  <footer>
+    <p>Accessible Dashboard · Learning project</p>
+    <a href="#main">Back to top</a>
   </footer>
-
-  <script src="api.js"></script>
-  <script src="app.js"></script>
 </body>
 </html>
