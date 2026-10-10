@@ -1,4 +1,5 @@
 
+
 const productList = document.getElementById("productList");
 const searchInput = document.getElementById("searchInput");
 const categoryTabs = document.getElementById("categoryTabs");
@@ -7,33 +8,37 @@ const errorBanner = document.getElementById("errorBanner");
 const loading = document.getElementById("loading");
 const cartCount = document.getElementById("cartCount");
 const cartButton = document.getElementById("viewCart");
+const cartPanel = document.getElementById("cartPanel");
 
 let products = [];
 let activeCategory = "All";
-
-let cart;
+let cart = [];
 
 try {
   const savedCart = JSON.parse(
     localStorage.getItem("productCart") || "[]"
   );
-  cart = Array.isArray(savedCart) ? savedCart : [];
+
+  if (Array.isArray(savedCart)) {
+    cart = savedCart.filter(id => Number.isInteger(id));
+  }
 } catch {
   cart = [];
-}
-
-function saveCart() {
-  try {
-    localStorage.setItem("productCart", JSON.stringify(cart));
-    updateCartCount();
-  } catch {
-    showToast("Unable to save your cart on this device.");
-  }
 }
 
 function updateCartCount() {
   if (cartCount) {
     cartCount.textContent = cart.length;
+  }
+}
+
+function saveCart() {
+  updateCartCount();
+
+  try {
+    localStorage.setItem("productCart", JSON.stringify(cart));
+  } catch {
+    showToast("Could not save your cart on this device.");
   }
 }
 
@@ -50,7 +55,7 @@ function showToast(message) {
     toast.id = "cartMessage";
     toast.setAttribute("role", "status");
     toast.setAttribute("aria-live", "polite");
-    document.body.append(toast);
+    document.body.appendChild(toast);
   }
 
   toast.textContent = message;
@@ -112,14 +117,12 @@ function renderProducts() {
 
     const rating = document.createElement("p");
     const rate = Number(product.rating?.rate);
-    const count = Number(product.rating?.count);
+    const reviewCount = Number(product.rating?.count);
 
-    if (Number.isFinite(rate) && Number.isFinite(count)) {
-      rating.textContent =
-        "⭐ " + rate.toFixed(1) + " (" + count + " reviews)";
-    } else {
-      rating.textContent = "Rating unavailable";
-    }
+    rating.textContent =
+      Number.isFinite(rate) && Number.isFinite(reviewCount)
+        ? "⭐ " + rate.toFixed(1) + " (" + reviewCount + " reviews)"
+        : "Rating unavailable";
 
     const price = document.createElement("p");
     price.className = "price";
@@ -130,7 +133,7 @@ function renderProducts() {
     button.addEventListener("click", () => addToCart(product));
 
     card.append(image, title, rating, price, button);
-    productList.append(card);
+    productList.appendChild(card);
   });
 }
 
@@ -148,8 +151,64 @@ function renderCategories() {
       renderProducts();
     });
 
-    categoryTabs.append(button);
+    categoryTabs.appendChild(button);
   });
+}
+
+function renderCart() {
+  cartPanel.replaceChildren();
+
+  const heading = document.createElement("h2");
+  heading.textContent = "Your Shopping Cart";
+  cartPanel.appendChild(heading);
+
+  let total = 0;
+
+  const cartItems = cart.map((id, index) => ({
+    product: products.find(p => p.id === id),
+    index
+  })).filter(item => item.product);
+
+  if (cartItems.length === 0) {
+    const empty = document.createElement("p");
+    empty.textContent = "Your cart is empty.";
+    cartPanel.appendChild(empty);
+  }
+
+  cartItems.forEach(({ product, index }) => {
+    total += product.price;
+
+    const item = document.createElement("div");
+    item.className = "cart-item";
+
+    const name = document.createElement("p");
+    name.textContent =
+      product.title + " — $" + product.price.toFixed(2);
+
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Remove";
+    removeButton.addEventListener("click", () => {
+      cart.splice(index, 1);
+      saveCart();
+      renderCart();
+    });
+
+    item.append(name, removeButton);
+    cartPanel.appendChild(item);
+  });
+
+  const totalText = document.createElement("h3");
+  totalText.textContent = "Total: $" + total.toFixed(2);
+  cartPanel.appendChild(totalText);
+
+  const closeButton = document.createElement("button");
+  closeButton.textContent = "Close Cart";
+  closeButton.addEventListener("click", () => {
+    cartPanel.hidden = true;
+  });
+
+  cartPanel.appendChild(closeButton);
+  cartPanel.hidden = false;
 }
 
 async function init() {
@@ -170,70 +229,14 @@ async function init() {
 searchInput.addEventListener("input", renderProducts);
 sortSelect.addEventListener("change", renderProducts);
 
+cartButton.addEventListener("click", () => {
+  if (products.length === 0) {
+    showToast("Please wait for products to load.");
+    return;
+  }
+
+  renderCart();
+});
+
 updateCartCount();
 init();
-
-function renderCart() {
-  let cartPanel = document.getElementById("cartPanel");
-
-  if (!cartPanel) {
-    cartPanel = document.createElement("section");
-    cartPanel.id = "cartPanel";
-    cartPanel.className = "product-card";
-    cartPanel.setAttribute("aria-label", "Shopping cart");
-    productList.before(cartPanel);
-  }
-
-  cartPanel.replaceChildren();
-
-  const heading = document.createElement("h2");
-  heading.textContent = "Your Shopping Cart";
-  cartPanel.append(heading);
-
-  let total = 0;
-
-  if (cart.length === 0) {
-    const empty = document.createElement("p");
-    empty.textContent = "Your cart is empty.";
-    cartPanel.append(empty);
-  }
-
-  cart.forEach((id, index) => {
-    const product = products.find(p => p.id === id);
-    if (!product) return;
-
-    total += product.price;
-
-    const item = document.createElement("p");
-    item.textContent =
-      product.title + " — $" + product.price.toFixed(2) + " ";
-
-    const removeButton = document.createElement("button");
-    removeButton.textContent = "Remove";
-    removeButton.addEventListener("click", () => {
-      cart.splice(index, 1);
-      saveCart();
-      renderCart();
-    });
-
-    item.append(removeButton);
-    cartPanel.append(item);
-  });
-
-  const totalText = document.createElement("h3");
-  totalText.textContent = "Total: $" + total.toFixed(2);
-  cartPanel.append(totalText);
-
-  const closeButton = document.createElement("button");
-  closeButton.textContent = "Close Cart";
-  closeButton.addEventListener("click", () => {
-    cartPanel.hidden = true;
-  });
-  cartPanel.append(closeButton);
-
-  cartPanel.hidden = false;
-}
-
-if (cartButton) {
-  cartButton.addEventListener("click", renderCart);
-}
