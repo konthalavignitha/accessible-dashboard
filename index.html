@@ -66,7 +66,9 @@
         </form>
         <p id="message" role="status"></p>
       </article>
-
+<button id="themeToggle" type="button">
+  Switch Theme
+</button>
       <button id="openDialog" type="button">Open Information</button>
       <dialog id="infoDialog" aria-labelledby="dialogTitle">
         <h3 id="dialogTitle">Dashboard Information</h3>
@@ -88,6 +90,10 @@
       event.preventDefault();
       document.getElementById('message').textContent = 'Form submitted successfully!';
     });
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const isDark = document.body.dataset.theme === 'dark';
+  document.body.dataset.theme = isDark ? 'light' : 'dark';
+});
   </script>
 </body>
 </html>
